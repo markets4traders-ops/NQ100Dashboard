@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASDAQ 100 Dashboard</title>
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+
+    --color-success-rgb: var(--color-teal-300-rgb);
+    --color-error-rgb: var(--color-red-400-rgb);
+    --color-warning-rgb: var(--color-orange-400-rgb);
+    --color-info-rgb: var(--color-gray-300-rgb);
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+}
+
+html {
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Header */
+.dashboard-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: white;
+  padding: var(--space-32) var(--space-24);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: white;
+}
+
+.dashboard-header p {
+  margin: var(--space-8) 0 0 0;
+  font-size: var(--font-size-lg);
+  opacity: 0.9;
+}
+
+/* Container */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-24);
+}
+
+/* Summary Cards */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-20);
+  margin-bottom: var(--space-32);
+}
+
+.summary-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-card-border);
+  transition: transform var(--duration-normal) var(--ease-standard), box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.summary-card h3 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--space-12) 0;
+}
+
+.summary-value {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.signal-breakdown {
+  display: flex;
+  gap: var(--space-16);
+  margin-top: var(--space-12);
+}
+
+.signal-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signal-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.signal-count {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.signal-buy { color: #10b981; }
+.signal-hold { color: #fbbf24; }
+.signal-sell { color: #ef4444; }
+
+.market-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-12);
+  gap: var(--space-16);
+}
+
+.stat-item {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Top Movers Section */
+.movers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: var(--space-20);
+  margin-bottom: var(--space-32);
+}
+
+.mover-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-card-border);
+}
+
+.mover-card h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-16) 0;
+  color: var(--color-text);
+}
+
+/* Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.data-table thead {
+  background: var(--color-secondary);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.data-table th {
+  padding: var(--space-12) var(--space-8);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-table td {
+  padding: var(--space-12) var(--space-8);
+  border-bottom: 1px solid var(--color-card-border-inner);
+}
+
+.data-table tbody tr {
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.data-table tbody tr:hover {
+  background: var(--color-secondary);
+}
+
+.positive {
+  color: #10b981;
+  font-weight: var(--font-weight-semibold);
+}
+
+.negative {
+  color: #ef4444;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Sector Overview */
+.section {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-card-border);
+  margin-bottom: var(--space-32);
+}
+
+.section h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  margin: 0 0 var(--space-20) 0;
+  color: var(--color-text);
+}
+
+/* All Stocks Section */
+.filters {
+  display: flex;
+  gap: var(--space-12);
+  margin-bottom: var(--space-20);
+  flex-wrap: wrap;
+}
+
+.search-input, .filter-select {
+  padding: var(--space-10) var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  background: var(--color-background);
+  color: var(--color-text);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.search-input {
+  flex: 1;
+  min-width: 250px;
+}
+
+.filter-select {
+  min-width: 150px;
+}
+
+.search-input:focus, .filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+/* Signal Badge */
+.signal-badge {
+  display: inline-block;
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  min-width: 60px;
+}
+
+.signal-badge-buy {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.signal-badge-hold {
+  background: rgba(251, 191, 36, 0.15);
+  color: #d97706;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.signal-badge-sell {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Sortable header */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: var(--space-20);
+}
+
+.sortable:hover {
+  background: var(--color-secondary-hover);
+}
+
+.sort-indicator {
+  position: absolute;
+  right: var(--space-8);
+  font-size: var(--font-size-xs);
+}
+
+.no-results {
+  text-align: center;
+  padding: var(--space-32);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .movers-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filters {
+    flex-direction: column;
+  }
+  
+  .search-input, .filter-select {
+    width: 100%;
+  }
+  
+  .data-table {
+    font-size: var(--font-size-xs);
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: var(--space-8) var(--space-4);
+  }
+}
+
+@media print {
+  .filters {
+    display: none;
+  }
+  
+  .summary-card:hover,
+  .data-table tbody tr:hover {
+    transform: none;
+    background: none;
+  }
+}
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>NASDAQ 100 Dashboard</h1>
+        <p>Real-time marktoverzicht</p>
+    </div>
+
+    <div class="container">
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>Totaal Bedrijven</h3>
+                <div class="summary-value" id="totalCompanies">97</div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>Handelssignalen</h3>
+                <div class="signal-breakdown">
+                    <div class="signal-item">
+                        <div class="signal-label">BUY</div>
+                        <div class="signal-count signal-buy" id="buySignals">59</div>
+                    </div>
+                    <div class="signal-item">
+                        <div class="signal-label">HOLD</div>
+                        <div class="signal-count signal-hold" id="holdSignals">25</div>
+                    </div>
+                    <div class="signal-item">
+                        <div class="signal-label">SELL</div>
+                        <div class="signal-count signal-sell" id="sellSignals">2</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>Marktbeweging</h3>
+                <div class="market-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Positief</div>
+                        <div class="stat-value positive" id="positiveStocks">57</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Negatief</div>
+                        <div class="stat-value negative" id="negativeStocks">40</div>
+                    </div>
+                </div>
+                <div style="margin-top: 12px; text-align: center;">
+                    <div class="stat-label">Gem. Verandering</div>
+                    <div class="stat-value" id="avgChange" style="color: #10b981;">+0.04%</div>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>Totale Market Cap</h3>
+                <div class="summary-value" id="totalMarketCap">$35,060.2B</div>
+            </div>
+        </div>
+
+        <!-- Top Movers -->
+        <div class="movers-grid">
+            <div class="mover-card">
+                <h2>🚀 Top 5 Stijgers</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Bedrijf</th>
+                            <th>Verandering</th>
+                            <th>Prijs</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topGainersTable"></tbody>
+                </table>
+            </div>
+            
+            <div class="mover-card">
+                <h2>📉 Top 5 Dalers</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ticker</th>
+                            <th>Bedrijf</th>
+                            <th>Verandering</th>
+                            <th>Prijs</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topLosersTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sector Overview -->
+        <div class="section">
+            <h2>Sector Overzicht</h2>
+            <table class="data-table" id="sectorTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" onclick="sortSectorTable(0)">Sector <span class="sort-indicator" id="sort-0"></span></th>
+                        <th class="sortable" onclick="sortSectorTable(1)"># Bedrijven <span class="sort-indicator" id="sort-1"></span></th>
+                        <th class="sortable" onclick="sortSectorTable(2)">Gem. Verandering <span class="sort-indicator" id="sort-2"></span></th>
+                        <th class="sortable" onclick="sortSectorTable(3)">Market Cap (B) <span class="sort-indicator" id="sort-3"></span></th>
+                        <th class="sortable" onclick="sortSectorTable(4)">Gem. Score <span class="sort-indicator" id="sort-4"></span></th>
+                    </tr>
+                </thead>
+                <tbody id="sectorTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- All Stocks -->
+        <div class="section">
+            <h2>Alle Aandelen</h2>
+            <div class="filters">
+                <input type="text" class="search-input" id="searchInput" placeholder="Zoek op ticker of bedrijfsnaam...">
+                <select class="filter-select" id="sectorFilter">
+                    <option value="">Alle Sectoren</option>
+                </select>
+                <select class="filter-select" id="signalFilter">
+                    <option value="">Alle Signalen</option>
+                    <option value="BUY">BUY</option>
+                    <option value="HOLD">HOLD</option>
+                    <option value="SELL">SELL</option>
+                </select>
+            </div>
+            
+            <table class="data-table" id="allStocksTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" onclick="sortStockTable(0)">Ticker <span class="sort-indicator" id="stock-sort-0"></span></th>
+                        <th class="sortable" onclick="sortStockTable(1)">Bedrijf <span class="sort-indicator" id="stock-sort-1"></span></th>
+                        <th class="sortable" onclick="sortStockTable(2)">Sector <span class="sort-indicator" id="stock-sort-2"></span></th>
+                        <th class="sortable" onclick="sortStockTable(3)">Prijs <span class="sort-indicator" id="stock-sort-3"></span></th>
+                        <th class="sortable" onclick="sortStockTable(4)">Verandering <span class="sort-indicator" id="stock-sort-4"></span></th>
+                        <th class="sortable" onclick="sortStockTable(5)">Market Cap (B) <span class="sort-indicator" id="stock-sort-5"></span></th>
+                        <th class="sortable" onclick="sortStockTable(6)">Score <span class="sort-indicator" id="stock-sort-6"></span></th>
+                        <th class="sortable" onclick="sortStockTable(7)">Signaal <span class="sort-indicator" id="stock-sort-7"></span></th>
+                    </tr>
+                </thead>
+                <tbody id="allStocksTableBody"></tbody>
+            </table>
+            <div class="no-results" id="noResults" style="display: none;">Geen resultaten gevonden</div>
+        </div>
+    </div>
+
+    <script>
+        // Data
+        const dashboardData = {
+            summary: {
+                totalCompanies: 97,
+                buySignals: 59,
+                holdSignals: 25,
+                sellSignals: 2,
+                avgChange: 0.04,
+                positiveStocks: 57,
+                negativeStocks: 40,
+                totalMarketCap: 35060.23
+            },
+            topGainers: [
+                { ticker: 'MNST', company: 'Monster Beverage', change: 5.16, price: 69.73 },
+                { ticker: 'SBUX', company: 'Starbucks Corp.', change: 4.07, price: 85.57 },
+                { ticker: 'DASH', company: 'DoorDash Inc.', change: 4.0, price: 204.31 },
+                { ticker: 'DLTR', company: 'Dollar Tree', change: 3.7, price: 105.74 },
+                { ticker: 'MAR', company: 'Marriott International', change: 3.56, price: 291.16 }
+            ],
+            topLosers: [
+                { ticker: 'TTWO', company: 'Take-Two Interactive', change: -8.08, price: 232.0 },
+                { ticker: 'TTD', company: 'The Trade Desk', change: -6.32, price: 43.0 },
+                { ticker: 'DXCM', company: 'DexCom Inc.', change: -5.21, price: 55.0 },
+                { ticker: 'MCHP', company: 'Microchip Technology', change: -5.17, price: 56.28 },
+                { ticker: 'ARM', company: 'Arm Holdings', change: -3.71, price: 152.38 }
+            ],
+            sectors: [
+                { name: 'Technology', count: 44, avgChange: -0.69, totalMarketCap: 26999.17, avgScore: 69.09 },
+                { name: 'Consumer Discretionary', count: 13, avgChange: 0.33, totalMarketCap: 4952.58, avgScore: 67.5 },
+                { name: 'Industrials', count: 12, avgChange: 0.69, totalMarketCap: 653.49, avgScore: 64.58 },
+                { name: 'Healthcare', count: 11, avgChange: -0.61, totalMarketCap: 853.91, avgScore: 72.5 },
+                { name: 'Consumer Staples', count: 8, avgChange: 1.91, totalMarketCap: 873.31, avgScore: 61.25 },
+                { name: 'Telecommunications', count: 4, avgChange: 1.29, totalMarketCap: 415.78, avgScore: 72.5 },
+                { name: 'Utilities', count: 3, avgChange: 1.57, totalMarketCap: 223.65, avgScore: 85.83 },
+                { name: 'Energy', count: 2, avgChange: 1.64, totalMarketCap: 88.4, avgScore: 82.5 }
+            ],
+            allStocks: [{ticker:'ADBE',company:'Adobe Inc.',sector:'Technology',price:326.95,change:-0.12,marketCap:136.86,combinedScore:60,signal:'HOLD'},{ticker:'AMD',company:'Advanced Micro Devices',sector:'Technology',price:233.54,change:-1.75,marketCap:380.21,combinedScore:75,signal:'BUY'},{ticker:'ABNB',company:'Airbnb Inc.',sector:'Consumer Discretionary',price:120.88,change:0.29,marketCap:75.12,combinedScore:70,signal:'BUY'},{ticker:'GOOGL',company:'Alphabet Inc. Class A',sector:'Technology',price:278.83,change:-2.08,marketCap:3367.76,combinedScore:82.5,signal:'BUY'},{ticker:'GOOG',company:'Alphabet Inc. Class C',sector:'Technology',price:279.7,change:-1.98,marketCap:3367.76,combinedScore:87.5,signal:'BUY'},{ticker:'AMZN',company:'Amazon.com Inc.',sector:'Consumer Discretionary',price:244.41,change:0.56,marketCap:2612.79,combinedScore:92.5,signal:'BUY'},{ticker:'AEP',company:'American Electric Power',sector:'Utilities',price:121.43,change:1.59,marketCap:65.0,combinedScore:87.5,signal:'BUY'},{ticker:'AMGN',company:'Amgen Inc.',sector:'Healthcare',price:320.2,change:1.46,marketCap:172.42,combinedScore:90,signal:'BUY'},{ticker:'ADI',company:'Analog Devices',sector:'Technology',price:228.48,change:-1.89,marketCap:112.4,combinedScore:67.5,signal:'BUY'},{ticker:'AAPL',company:'Apple Inc.',sector:'Technology',price:268.47,change:-0.48,marketCap:3967.01,combinedScore:85,signal:'BUY'},{ticker:'AMAT',company:'Applied Materials',sector:'Technology',price:230.07,change:-1.48,marketCap:183.28,combinedScore:82.5,signal:'BUY'},{ticker:'APP',company:'AppLovin Corp.',sector:'Technology',price:619.93,change:-0.23,marketCap:209.51,combinedScore:72.5,signal:'BUY'},{ticker:'ARM',company:'Arm Holdings',sector:'Technology',price:152.38,change:-3.71,marketCap:161.68,combinedScore:62.5,signal:'HOLD'},{ticker:'ASML',company:'ASML Holding NV',sector:'Technology',price:1016.96,change:-1.19,marketCap:394.57,combinedScore:77.5,signal:'BUY'},{ticker:'TEAM',company:'Atlassian Corp.',sector:'Technology',price:157.83,change:1.09,marketCap:41.53,combinedScore:42.5,signal:'HOLD'},{ticker:'ADSK',company:'Autodesk Inc.',sector:'Technology',price:297.18,change:0.79,marketCap:63.3,combinedScore:65,signal:'BUY'},{ticker:'ADP',company:'Automatic Data Processing',sector:'Industrials',price:254.16,change:0.71,marketCap:102.79,combinedScore:60,signal:'HOLD'},{ticker:'AXON',company:'Axon Enterprise',sector:'Industrials',price:602.51,change:2.62,marketCap:47.54,combinedScore:55,signal:'HOLD'},{ticker:'BKR',company:'Baker Hughes',sector:'Energy',price:47.87,change:1.23,marketCap:47.24,combinedScore:85,signal:'BUY'},{ticker:'BIIB',company:'Biogen Inc.',sector:'Healthcare',price:155.51,change:-0.78,marketCap:22.81,combinedScore:75,signal:'BUY'},{ticker:'BKNG',company:'Booking Holdings',sector:'Consumer Discretionary',price:4940.0,change:0.84,marketCap:159.24,combinedScore:75,signal:'BUY'},{ticker:'AVGO',company:'Broadcom Inc.',sector:'Technology',price:349.43,change:-1.73,marketCap:1650.14,combinedScore:77.5,signal:'BUY'},{ticker:'CDNS',company:'Cadence Design Systems',sector:'Technology',price:325.05,change:0.18,marketCap:88.48,combinedScore:65,signal:'BUY'},{ticker:'CDW',company:'CDW Corp.',sector:'Technology',price:142.45,change:0.63,marketCap:18.55,combinedScore:60,signal:'HOLD'},{ticker:'CHTR',company:'Charter Communications',sector:'Telecommunications',price:219.86,change:0.92,marketCap:28.45,combinedScore:62.5,signal:'HOLD'},{ticker:'CSCO',company:'Cisco Systems Inc.',sector:'Technology',price:71.07,change:0.04,marketCap:280.07,combinedScore:87.5,signal:'BUY'},{ticker:'CCEP',company:'Coca-Cola Europacific',sector:'Consumer Staples',price:91.41,change:2.92,marketCap:41.5,combinedScore:77.5,signal:'BUY'},{ticker:'CTSH',company:'Cognizant Technology',sector:'Technology',price:73.2,change:0.51,marketCap:35.33,combinedScore:70,signal:'BUY'},{ticker:'CMCSA',company:'Comcast Corp.',sector:'Telecommunications',price:27.35,change:0.15,marketCap:99.66,combinedScore:70,signal:'BUY'},{ticker:'CEG',company:'Constellation Energy',sector:'Utilities',price:358.39,change:2.02,marketCap:111.96,combinedScore:85,signal:'BUY'},{ticker:'CPRT',company:'Copart Inc.',sector:'Industrials',price:40.51,change:1.33,marketCap:39.21,combinedScore:52.5,signal:'HOLD'},{ticker:'CSGP',company:'CoStar Group',sector:'Industrials',price:67.52,change:0.24,marketCap:28.62,combinedScore:42.5,signal:'HOLD'},{ticker:'COST',company:'Costco Wholesale Corp.',sector:'Consumer Staples',price:922.74,change:-0.09,marketCap:408.94,combinedScore:52.5,signal:'HOLD'},{ticker:'CRWD',company:'CrowdStrike Holdings',sector:'Technology',price:539.81,change:1.37,marketCap:135.47,combinedScore:72.5,signal:'BUY'},{ticker:'CSX',company:'CSX Corp.',sector:'Industrials',price:35.34,change:0.51,marketCap:65.81,combinedScore:87.5,signal:'BUY'},{ticker:'DDOG',company:'Datadog Inc.',sector:'Technology',price:191.24,change:0.22,marketCap:66.69,combinedScore:72.5,signal:'BUY'},{ticker:'DXCM',company:'DexCom Inc.',sector:'Healthcare',price:55.0,change:-5.21,marketCap:21.45,combinedScore:40,signal:'SELL'},{ticker:'FANG',company:'Diamondback Energy',sector:'Energy',price:143.65,change:2.05,marketCap:41.16,combinedScore:80,signal:'BUY'},{ticker:'DLTR',company:'Dollar Tree',sector:'Consumer Staples',price:105.74,change:3.7,marketCap:21.57,combinedScore:67.5,signal:'BUY'},{ticker:'DASH',company:'DoorDash Inc.',sector:'Consumer Discretionary',price:204.31,change:4.0,marketCap:87.28,combinedScore:60,signal:'HOLD'},{ticker:'EA',company:'Electronic Arts',sector:'Technology',price:200.6,change:0.11,marketCap:50.03,combinedScore:72.5,signal:'BUY'},{ticker:'EXC',company:'Exelon Corp.',sector:'Utilities',price:46.21,change:1.09,marketCap:46.69,combinedScore:85,signal:'BUY'},{ticker:'FAST',company:'Fastenal Company',sector:'Industrials',price:40.85,change:0.2,marketCap:46.9,combinedScore:60,signal:'HOLD'},{ticker:'FTNT',company:'Fortinet Inc.',sector:'Technology',price:81.79,change:1.55,marketCap:62.67,combinedScore:62.5,signal:'HOLD'},{ticker:'GEHC',company:'GE HealthCare Technologies',sector:'Healthcare',price:73.05,change:-1.51,marketCap:33.28,combinedScore:67.5,signal:'BUY'},{ticker:'GILD',company:'Gilead Sciences',sector:'Healthcare',price:118.84,change:-3.7,marketCap:147.6,combinedScore:82.5,signal:'BUY'},{ticker:'GFS',company:'GlobalFoundries Inc.',sector:'Technology',price:34.08,change:-0.99,marketCap:18.91,combinedScore:42.5,signal:'HOLD'},{ticker:'HON',company:'Honeywell International',sector:'Industrials',price:194.07,change:-0.94,marketCap:123.21,combinedScore:75,signal:'BUY'},{ticker:'IDXX',company:'IDEXX Laboratories',sector:'Healthcare',price:708.45,change:-0.74,marketCap:56.57,combinedScore:70,signal:'BUY'},{ticker:'ILMN',company:'Illumina Inc.',sector:'Healthcare',price:121.9,change:0.65,marketCap:18.63,combinedScore:70,signal:'BUY'},{ticker:'INTC',company:'Intel Corp.',sector:'Technology',price:38.13,change:2.39,marketCap:181.73,combinedScore:80,signal:'BUY'},{ticker:'INTU',company:'Intuit Inc.',sector:'Technology',price:648.85,change:-0.73,marketCap:180.9,combinedScore:67.5,signal:'BUY'},{ticker:'ISRG',company:'Intuitive Surgical',sector:'Healthcare',price:560.0,change:2.23,marketCap:198.52,combinedScore:77.5,signal:'BUY'},{ticker:'KDP',company:'Keurig Dr Pepper',sector:'Consumer Staples',price:25.96,change:-1.52,marketCap:35.27,combinedScore:55,signal:'HOLD'},{ticker:'KLAC',company:'KLA Corp.',sector:'Technology',price:1193.37,change:-1.08,marketCap:156.8,combinedScore:77.5,signal:'BUY'},{ticker:'KHC',company:'Kraft Heinz Company',sector:'Consumer Staples',price:24.28,change:2.36,marketCap:28.74,combinedScore:50,signal:'HOLD'},{ticker:'LRCX',company:'Lam Research',sector:'Technology',price:159.35,change:-1.75,marketCap:200.15,combinedScore:80,signal:'BUY'},{ticker:'LULU',company:'lululemon athletica',sector:'Consumer Discretionary',price:166.13,change:1.58,marketCap:19.7,combinedScore:62.5,signal:'HOLD'},{ticker:'MAR',company:'Marriott International',sector:'Consumer Discretionary',price:291.16,change:3.56,marketCap:78.13,combinedScore:85,signal:'BUY'},{ticker:'MRVL',company:'Marvell Technology',sector:'Technology',price:90.92,change:-2.58,marketCap:78.38,combinedScore:55,signal:'HOLD'},{ticker:'MELI',company:'MercadoLibre Inc.',sector:'Consumer Discretionary',price:2108.6,change:-0.93,marketCap:106.9,combinedScore:62.5,signal:'HOLD'},{ticker:'META',company:'Meta Platforms Inc.',sector:'Technology',price:621.71,change:0.45,marketCap:1567.04,combinedScore:82.5,signal:'BUY'},{ticker:'MCHP',company:'Microchip Technology',sector:'Technology',price:56.28,change:-5.17,marketCap:30.37,combinedScore:47.5,signal:'HOLD'},{ticker:'MU',company:'Micron Technology',sector:'Technology',price:237.92,change:-0.17,marketCap:267.06,combinedScore:85,signal:'BUY'},{ticker:'MSFT',company:'Microsoft Corp.',sector:'Technology',price:496.82,change:-0.06,marketCap:3692.55,combinedScore:82.5,signal:'BUY'},{ticker:'MRNA',company:'Moderna Inc.',sector:'Healthcare',price:24.54,change:0.86,marketCap:9.58,combinedScore:47.5,signal:'HOLD'},{ticker:'MDLZ',company:'Mondelez International',sector:'Consumer Staples',price:57.18,change:1.76,marketCap:73.78,combinedScore:62.5,signal:'HOLD'},{ticker:'MDB',company:'MongoDB Inc.',sector:'Technology',price:361.04,change:1.46,marketCap:29.37,combinedScore:67.5,signal:'BUY'},{ticker:'MNST',company:'Monster Beverage',sector:'Consumer Staples',price:69.73,change:5.16,marketCap:68.09,combinedScore:85,signal:'BUY'},{ticker:'NFLX',company:'Netflix Inc.',sector:'Technology',price:1103.66,change:0.61,marketCap:467.66,combinedScore:72.5,signal:'BUY'},{ticker:'NVDA',company:'NVIDIA Corp.',sector:'Technology',price:188.15,change:0.04,marketCap:4572.05,combinedScore:82.5,signal:'BUY'},{ticker:'NXPI',company:'NXP Semiconductors',sector:'Technology',price:204.56,change:-0.92,marketCap:51.48,combinedScore:67.5,signal:'BUY'},{ticker:'ORLY',company:"O'Reilly Automotive",sector:'Consumer Discretionary',price:97.09,change:2.2,marketCap:82.22,combinedScore:77.5,signal:'BUY'},{ticker:'ODFL',company:'Old Dominion Freight',sector:'Industrials',price:139.9,change:1.61,marketCap:29.25,combinedScore:52.5,signal:'HOLD'},{ticker:'ON',company:'ON Semiconductor',sector:'Technology',price:47.83,change:-1.99,marketCap:19.25,combinedScore:52.5,signal:'HOLD'},{ticker:'PCAR',company:'PACCAR Inc.',sector:'Industrials',price:98.69,change:0.42,marketCap:51.83,combinedScore:77.5,signal:'BUY'},{ticker:'PANW',company:'Palo Alto Networks',sector:'Technology',price:212.29,change:0.43,marketCap:143.69,combinedScore:75,signal:'BUY'},{ticker:'PAYX',company:'Paychex Inc.',sector:'Industrials',price:111.96,change:0.2,marketCap:40.29,combinedScore:52.5,signal:'HOLD'},{ticker:'PYPL',company:'PayPal Holdings',sector:'Technology',price:66.22,change:-0.06,marketCap:61.96,combinedScore:67.5,signal:'BUY'},{ticker:'PDD',company:'PDD Holdings',sector:'Consumer Discretionary',price:135.78,change:-0.7,marketCap:192.76,combinedScore:87.5,signal:'BUY'},{ticker:'PEP',company:'PepsiCo Inc.',sector:'Consumer Staples',price:142.95,change:0.97,marketCap:195.46,combinedScore:72.5,signal:'BUY'},{ticker:'QCOM',company:'Qualcomm Inc.',sector:'Technology',price:170.89,change:-1.33,marketCap:183.02,combinedScore:75,signal:'BUY'},{ticker:'REGN',company:'Regeneron Pharmaceuticals',sector:'Healthcare',price:657.53,change:1.65,marketCap:69.11,combinedScore:77.5,signal:'BUY'},{ticker:'ROP',company:'Roper Technologies',sector:'Industrials',price:447.05,change:0.58,marketCap:48.12,combinedScore:55,signal:'HOLD'},{ticker:'ROST',company:'Ross Stores',sector:'Consumer Discretionary',price:161.08,change:0.53,marketCap:52.39,combinedScore:82.5,signal:'BUY'},{ticker:'SBUX',company:'Starbucks Corp.',sector:'Consumer Discretionary',price:85.57,change:4.07,marketCap:97.28,combinedScore:57.5,signal:'HOLD'},{ticker:'SMCI',company:'Super Micro Computer',sector:'Technology',price:39.76,change:-1.43,marketCap:23.63,combinedScore:65,signal:'BUY'},{ticker:'SNPS',company:'Synopsys Inc.',sector:'Technology',price:393.43,change:-0.68,marketCap:73.08,combinedScore:52.5,signal:'HOLD'},{ticker:'TMUS',company:'T-Mobile US Inc.',sector:'Telecommunications',price:207.0,change:2.98,marketCap:231.53,combinedScore:70,signal:'BUY'},{ticker:'TTWO',company:'Take-Two Interactive',sector:'Consumer Discretionary',price:232.0,change:-8.08,marketCap:42.85,combinedScore:47.5,signal:'HOLD'},{ticker:'TSLA',company:'Tesla Inc.',sector:'Consumer Discretionary',price:429.52,change:-3.68,marketCap:1345.89,combinedScore:67.5,signal:'BUY'},{ticker:'TXN',company:'Texas Instruments',sector:'Technology',price:160.55,change:-0.51,marketCap:145.88,combinedScore:62.5,signal:'HOLD'},{ticker:'TTD',company:'The Trade Desk',sector:'Technology',price:43.0,change:-6.32,marketCap:20.79,combinedScore:37.5,signal:'SELL'},{ticker:'VRSK',company:'Verisk Analytics',sector:'Industrials',price:214.66,change:0.84,marketCap:29.92,combinedScore:55,signal:'HOLD'},{ticker:'VRTX',company:'Vertex Pharmaceuticals',sector:'Healthcare',price:409.47,change:-1.63,marketCap:103.89,combinedScore:60,signal:'HOLD'},{ticker:'WBD',company:'Warner Bros. Discovery',sector:'Telecommunications',price:22.67,change:1.12,marketCap:56.13,combinedScore:75,signal:'BUY'},{ticker:'WDAY',company:'Workday Inc.',sector:'Technology',price:225.17,change:0.3,marketCap:60.12,combinedScore:52.5,signal:'HOLD'}]
+        };
+
+        // State
+        let currentSectorSort = { column: -1, ascending: true };
+        let currentStockSort = { column: -1, ascending: true };
+        let filteredStocks = [...dashboardData.allStocks];
+
+        // Format helpers
+        function formatPrice(price) {
+            return `$${price.toFixed(2)}`;
+        }
+
+        function formatChange(change) {
+            const sign = change > 0 ? '+' : '';
+            return `${sign}${change.toFixed(2)}%`;
+        }
+
+        function formatMarketCap(marketCap) {
+            return `$${marketCap.toFixed(1)}B`;
+        }
+
+        function getSignalBadge(signal) {
+            const classes = {
+                'BUY': 'signal-badge-buy',
+                'HOLD': 'signal-badge-hold',
+                'SELL': 'signal-badge-sell'
+            };
+            return `<span class="signal-badge ${classes[signal]}">${signal}</span>`;
+        }
+
+        // Populate top gainers
+        function populateTopGainers() {
+            const tbody = document.getElementById('topGainersTable');
+            tbody.innerHTML = dashboardData.topGainers.map(stock => `
+                <tr>
+                    <td><strong>${stock.ticker}</strong></td>
+                    <td>${stock.company}</td>
+                    <td class="positive">${formatChange(stock.change)}</td>
+                    <td>${formatPrice(stock.price)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Populate top losers
+        function populateTopLosers() {
+            const tbody = document.getElementById('topLosersTable');
+            tbody.innerHTML = dashboardData.topLosers.map(stock => `
+                <tr>
+                    <td><strong>${stock.ticker}</strong></td>
+                    <td>${stock.company}</td>
+                    <td class="negative">${formatChange(stock.change)}</td>
+                    <td>${formatPrice(stock.price)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Populate sector table
+        function populateSectorTable() {
+            const tbody = document.getElementById('sectorTableBody');
+            tbody.innerHTML = dashboardData.sectors.map(sector => `
+                <tr>
+                    <td><strong>${sector.name}</strong></td>
+                    <td>${sector.count}</td>
+                    <td class="${sector.avgChange >= 0 ? 'positive' : 'negative'}">${formatChange(sector.avgChange)}</td>
+                    <td>${formatMarketCap(sector.totalMarketCap)}</td>
+                    <td>${sector.avgScore.toFixed(1)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Sort sector table
+        function sortSectorTable(column) {
+            const ascending = currentSectorSort.column === column ? !currentSectorSort.ascending : true;
+            currentSectorSort = { column, ascending };
+
+            // Clear all indicators
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`sort-${i}`).textContent = '';
+            }
+            document.getElementById(`sort-${column}`).textContent = ascending ? '▲' : '▼';
+
+            dashboardData.sectors.sort((a, b) => {
+                let aVal, bVal;
+                switch(column) {
+                    case 0: aVal = a.name; bVal = b.name; break;
+                    case 1: aVal = a.count; bVal = b.count; break;
+                    case 2: aVal = a.avgChange; bVal = b.avgChange; break;
+                    case 3: aVal = a.totalMarketCap; bVal = b.totalMarketCap; break;
+                    case 4: aVal = a.avgScore; bVal = b.avgScore; break;
+                }
+                
+                if (typeof aVal === 'string') {
+                    return ascending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                }
+                return ascending ? aVal - bVal : bVal - aVal;
+            });
+
+            populateSectorTable();
+        }
+
+        // Populate all stocks table
+        function populateStocksTable() {
+            const tbody = document.getElementById('allStocksTableBody');
+            const noResults = document.getElementById('noResults');
+            
+            if (filteredStocks.length === 0) {
+                tbody.innerHTML = '';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            noResults.style.display = 'none';
+            tbody.innerHTML = filteredStocks.map(stock => `
+                <tr>
+                    <td><strong>${stock.ticker}</strong></td>
+                    <td>${stock.company}</td>
+                    <td>${stock.sector}</td>
+                    <td>${formatPrice(stock.price)}</td>
+                    <td class="${stock.change >= 0 ? 'positive' : 'negative'}">${formatChange(stock.change)}</td>
+                    <td>${formatMarketCap(stock.marketCap)}</td>
+                    <td>${stock.combinedScore}</td>
+                    <td>${getSignalBadge(stock.signal)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Sort stock table
+        function sortStockTable(column) {
+            const ascending = currentStockSort.column === column ? !currentStockSort.ascending : true;
+            currentStockSort = { column, ascending };
+
+            // Clear all indicators
+            for (let i = 0; i < 8; i++) {
+                document.getElementById(`stock-sort-${i}`).textContent = '';
+            }
+            document.getElementById(`stock-sort-${column}`).textContent = ascending ? '▲' : '▼';
+
+            filteredStocks.sort((a, b) => {
+                let aVal, bVal;
+                switch(column) {
+                    case 0: aVal = a.ticker; bVal = b.ticker; break;
+                    case 1: aVal = a.company; bVal = b.company; break;
+                    case 2: aVal = a.sector; bVal = b.sector; break;
+                    case 3: aVal = a.price; bVal = b.price; break;
+                    case 4: aVal = a.change; bVal = b.change; break;
+                    case 5: aVal = a.marketCap; bVal = b.marketCap; break;
+                    case 6: aVal = a.combinedScore; bVal = b.combinedScore; break;
+                    case 7: aVal = a.signal; bVal = b.signal; break;
+                }
+                
+                if (typeof aVal === 'string') {
+                    return ascending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                }
+                return ascending ? aVal - bVal : bVal - aVal;
+            });
+
+            populateStocksTable();
+        }
+
+        // Filter stocks
+        function filterStocks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const sectorFilter = document.getElementById('sectorFilter').value;
+            const signalFilter = document.getElementById('signalFilter').value;
+
+            filteredStocks = dashboardData.allStocks.filter(stock => {
+                const matchesSearch = stock.ticker.toLowerCase().includes(searchTerm) || 
+                                     stock.company.toLowerCase().includes(searchTerm);
+                const matchesSector = !sectorFilter || stock.sector === sectorFilter;
+                const matchesSignal = !signalFilter || stock.signal === signalFilter;
+                
+                return matchesSearch && matchesSector && matchesSignal;
+            });
+
+            // Reapply current sort if any
+            if (currentStockSort.column >= 0) {
+                sortStockTable(currentStockSort.column);
+            } else {
+                populateStocksTable();
+            }
+        }
+
+        // Populate sector filter
+        function populateSectorFilter() {
+            const sectorFilter = document.getElementById('sectorFilter');
+            const uniqueSectors = [...new Set(dashboardData.allStocks.map(s => s.sector))].sort();
+            
+            uniqueSectors.forEach(sector => {
+                const option = document.createElement('option');
+                option.value = sector;
+                option.textContent = sector;
+                sectorFilter.appendChild(option);
+            });
+        }
+
+        // Initialize
+        function init() {
+            populateTopGainers();
+            populateTopLosers();
+            populateSectorTable();
+            populateStocksTable();
+            populateSectorFilter();
+
+            // Add event listeners
+            document.getElementById('searchInput').addEventListener('input', filterStocks);
+            document.getElementById('sectorFilter').addEventListener('change', filterStocks);
+            document.getElementById('signalFilter').addEventListener('change', filterStocks);
+        }
+
+        // Run on page load
+        init();
+    </script>
+</body>
+</html>
